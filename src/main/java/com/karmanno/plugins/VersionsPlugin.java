@@ -11,12 +11,22 @@ import org.gradle.internal.impldep.org.eclipse.jgit.revwalk.RevCommit;
 
 import java.util.List;
 
+/**
+ *     prefix format:
+ *        PREFIX: COMMIT MESSAGE
+ *     prefixes:
+ *        WIP/wip - increase build version
+ *        fix/FIX - increase patch version
+ *        feat/FEAT/feature - increase minor version
+ *        global/GLOBAL - increase major version
+ */
 public class VersionsPlugin implements Plugin<Project> {
     @Override
     public void apply(Project project) {
         Git git = GitUtils.gitRepo(project);
 
-        project.getExtensions().getExtraProperties().set("versionInfo", new Closure<VersionInfo>(this, this) {
+        project.getExtensions().getExtraProperties().set("versionInfo",
+                new Closure<VersionInfo>(this, this) {
             @Override
             public VersionInfo call(Object arguments) {
                 try {
@@ -28,28 +38,11 @@ public class VersionsPlugin implements Plugin<Project> {
                     ObjectId headId = git.getRepository().resolve(Constants.HEAD);
                     Iterable<RevCommit> commitsBetweenHeadAndLatestTag = git.log().addRange(latestTagId, headId).call();
 
-                    // prefix format:
-                    // PREFIX: COMMIT MESSAGE
-                    // prefixes:
-                    // WIP/wip - increase build version
-                    // fix/FIX - increase patch version
-                    // feat/FEAT/feature - increase minor version
-                    // global/GLOBAL - increase major version
-
-                    VersionInfo newVersionInfo =
-                    for (RevCommit revCommit : commitsBetweenHeadAndLatestTag) {
-                        String message = revCommit.getFullMessage();
-                        String[] splitted = message.split(":");
-                        if (splitted.length < 2)
-                            continue;
-                        else {
-
-                        }
-                    }
-
+                    return VersionsService.calculateNewVersions(latestVersionInfo, commitsBetweenHeadAndLatestTag);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                return new VersionInfo();
             }
         });
     }
