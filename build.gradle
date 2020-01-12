@@ -1,0 +1,24 @@
+plugins {
+    id 'java-gradle-plugin'
+}
+
+group = 'com.karmanno.plugins'
+version = '0.0.1.SNAPSHOT'
+
+gradlePlugin {
+    plugins {
+        versionsPlugin {
+            id = 'com.karmanno.plugins.versions'
+            implementationClass = 'com.karmanno.plugins.VersionsPlugin'
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.10'
+    annotationProcessor 'org.projectlombok:lombok:1.18.10'
+}
