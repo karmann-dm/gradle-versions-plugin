@@ -27,6 +27,9 @@ public class VersionInfo {
         init();
     }
 
+    public VersionInfo(Integer major, Integer minor, Integer patch, Integer build, String branchName) {
+    }
+
     public VersionInfo(String... releaseBranches) {
         init();
         this.releaseBranches = releaseBranches;
