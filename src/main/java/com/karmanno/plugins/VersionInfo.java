@@ -58,6 +58,8 @@ public class VersionInfo {
     }
 
     public static VersionInfo fromTagString(String tag) {
+        String[] tokens = tag.split("\\.");
+        Integer major = Integer.parseInt(tokens[0]);
         return new VersionInfo();
     }
 }

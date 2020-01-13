@@ -4,7 +4,8 @@ public enum IncreasePriority {
     MAJOR(4),
     MINOR(3),
     PATCH(2),
-    BUILD(1);
+    BUILD(1),
+    NO_PRIORITY(0);
 
     private final int value;
 

@@ -38,7 +38,8 @@ public class VersionsPlugin implements Plugin<Project> {
                     ObjectId headId = git.getRepository().resolve(Constants.HEAD);
                     Iterable<RevCommit> commitsBetweenHeadAndLatestTag = git.log().addRange(latestTagId, headId).call();
 
-                    return VersionsService.calculateNewVersions(latestVersionInfo, commitsBetweenHeadAndLatestTag);
+                    return new VersionsService()
+                            .calculateNewVersions(latestVersionInfo, commitsBetweenHeadAndLatestTag);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

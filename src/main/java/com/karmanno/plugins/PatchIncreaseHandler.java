@@ -3,27 +3,26 @@ package com.karmanno.plugins;
 import java.util.Arrays;
 import java.util.List;
 
-public class MajorIncreaseHandler implements VersionIncreaseHandler {
-
+public class PatchIncreaseHandler implements VersionIncreaseHandler {
     @Override
     public List<String> getSupportablePatterns() {
         return Arrays.asList(
-                "global",
-                "GLOBAL"
+                "fix",
+                "FIX"
         );
     }
 
     @Override
     public IncreasePriority getSupportablePriority() {
-        return IncreasePriority.MAJOR;
+        return IncreasePriority.PATCH;
     }
 
     @Override
     public VersionInfo handle(VersionInfo previousVersion) {
         return new VersionInfo()
-                .setMajor(previousVersion.getMajor() + 1)
-                .setMinor(0)
-                .setPatch(0)
+                .setMajor(previousVersion.getMajor())
+                .setMinor(previousVersion.getMinor())
+                .setPatch(previousVersion.getPatch() + 1)
                 .setBuild(0)
                 .setBranchName(previousVersion.getBranchName())
                 .setReleaseBranches(previousVersion.getReleaseBranches());
