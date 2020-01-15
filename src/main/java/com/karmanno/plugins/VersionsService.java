@@ -1,36 +1,47 @@
 package com.karmanno.plugins;
 
+import com.karmanno.plugins.handlers.VersionIncreaseHandler;
 import org.gradle.internal.impldep.org.eclipse.jgit.revwalk.RevCommit;
 
 import java.util.List;
 
-public class VersionsService {
-    public List<VersionIncreaseHandler> handlers = List.of(
-            new MajorIncreaseHandler(),
-            new MinorIncreaseHandler(),
-            new PatchIncreaseHandler(),
-            new BuildIncreaseHandler()
-    );
+class VersionsService {
+    private static final String HEADER_DELIMETER = ":";
 
-    public VersionInfo calculateNewVersions(VersionInfo previousVersionInfo, Iterable<RevCommit> commits) {
-        String maxPriorityPrefix = "";
+    VersionInfo calculateNewVersions(VersionInfo previousVersionInfo,
+                                     Iterable<RevCommit> commits) {
+
+        IncreasePriority priority = IncreasePriority.NO_PRIORITY;
 
         for (RevCommit commit : commits) {
             String fullMessage = commit.getFullMessage();
-            String[] splittedForPrefix = fullMessage.split(":");
-            if (splittedForPrefix.length < 2) {
+            String[] splittedForPrefix = fullMessage.split(HEADER_DELIMETER);
+            if (prefixInvalid(splittedForPrefix))
                 continue;
-            }
             String prefix = splittedForPrefix[0].trim();
-            maxPriorityPrefix = prefix;
+            IncreasePriority extractedPriority = extractPriority(prefix);
+            if (extractedPriority.getValue() >= priority.getValue())
+                priority = extractedPriority;
         }
 
-        String finalMaxPriorityPrefix = maxPriorityPrefix;
-        VersionIncreaseHandler increaseHandler = handlers.stream()
-                .filter(h -> h.getSupportablePatterns().contains(finalMaxPriorityPrefix))
+        IncreasePriority finalPriority = priority;
+        VersionIncreaseHandler increaseHandler = VersionIncreaseHandler.handlers().stream()
+                .filter(h -> h.getSupportablePriority().equals(finalPriority))
                 .findAny()
-                .orElse(new NoIncreaseHandler());
+                .orElse(VersionIncreaseHandler.defaultHandler());
 
         return increaseHandler.handle(previousVersionInfo);
+    }
+
+    private IncreasePriority extractPriority(String prefix) {
+        List<VersionIncreaseHandler> handlers = VersionIncreaseHandler.handlers();
+        return handlers.stream().filter(h -> h.getSupportablePatterns().contains(prefix))
+                .findFirst()
+                .map(VersionIncreaseHandler::getSupportablePriority)
+                .orElse(IncreasePriority.NO_PRIORITY);
+    }
+
+    private boolean prefixInvalid(String[] prefix) {
+        return prefix.length < 2;
     }
 }

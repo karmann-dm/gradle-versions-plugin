@@ -1,5 +1,6 @@
 plugins {
     id 'java-gradle-plugin'
+    id "nebula.integtest" version "7.0.5"
 }
 
 group = 'com.karmanno.plugins'
@@ -23,6 +24,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.10'
 
     testImplementation 'junit:junit:4.13'
+    testCompile 'com.netflix.nebula:nebula-test:7.2.5'
     testCompileOnly 'org.projectlombok:lombok:1.18.10'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.10'
 }

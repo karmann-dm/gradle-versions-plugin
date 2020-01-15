@@ -7,8 +7,9 @@ import org.gradle.internal.impldep.org.eclipse.jgit.internal.storage.file.FileRe
 import java.io.File;
 import java.io.IOException;
 
-public class GitUtils {
-    public static Git gitRepo(Project project) {
+class GitUtils {
+
+    static Git gitRepo(Project project) {
         try {
             File gitDir = getRootGitDir(project.getProjectDir());
             return Git.wrap(new FileRepository(gitDir));

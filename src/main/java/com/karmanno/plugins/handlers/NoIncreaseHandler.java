@@ -1,4 +1,7 @@
-package com.karmanno.plugins;
+package com.karmanno.plugins.handlers;
+
+import com.karmanno.plugins.IncreasePriority;
+import com.karmanno.plugins.VersionInfo;
 
 import java.util.Collections;
 import java.util.List;

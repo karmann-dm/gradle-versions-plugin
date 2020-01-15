@@ -12,4 +12,8 @@ public enum IncreasePriority {
     IncreasePriority(final int value) {
         this.value = value;
     }
+
+    public int getValue() {
+        return value;
+    }
 }
