@@ -55,3 +55,24 @@ publishing {
         }
     }
 }
+
+publishing {
+    repositories {
+        maven {
+            name = "Github"
+            url = uri("https://maven.pkg.github.com/karmann-dm")
+            credentials {
+                username = findProperty("GITHUB_USERNAME")
+                password = findProperty("GITHUB_API_TOKEN")
+            }
+        }
+    }
+    publications {
+        register("jar", MavenPublication) {
+            from(components["java"])
+            pom {
+                url.set("https://github.com/karmann-dm/cloud-platrofm-versions-plugin.git")
+            }
+        }
+    }
+}
