@@ -5,12 +5,6 @@ import lombok.Data;
 import java.util.Arrays;
 import java.util.Collections;
 
-/**
- * Full version snapshot with some branch: 1.2.3.feature-account.153
- * Full version snapshot with master: 1.2.3.153
- * Full version release with some branch: 1.2.3.feature-account
- * Full version release with master: 1.2.3
- */
 @Data
 public class VersionInfo {
     private static final String DOT = ".";
@@ -57,9 +51,38 @@ public class VersionInfo {
         return version.toString();
     }
 
+    /**
+     * Full version snapshot with some branch: 1.2.3.feature-account.153
+     * Full version snapshot with master: 1.2.3.153
+     * Full version release with some branch: 1.2.3.feature-account
+     * Full version release with master: 1.2.3
+     */
     public static VersionInfo fromTagString(String tag) {
         String[] tokens = tag.split("\\.");
         Integer major = Integer.parseInt(tokens[0]);
-        return new VersionInfo();
+        Integer minor = Integer.parseInt(tokens[1]);
+        Integer patch = Integer.parseInt(tokens[2]);
+        Integer build = null;
+        String branch = null;
+
+        if (tokens.length > 3) {
+            try {
+                build = Integer.parseInt(tokens[3]);
+            } catch (Exception e) {
+                branch = tokens[3];
+            }
+            if (build == null && tokens.length > 4) {
+                build = Integer.parseInt(tokens[4]);
+            }
+        }
+
+        return new VersionInfo()
+                .setReleaseBranches((String[])Collections.singleton("master").toArray())
+                .setBranchName(branch)
+                .setSnapshot(build == null)
+                .setMajor(major)
+                .setMinor(minor)
+                .setPatch(patch)
+                .setBuild(build);
     }
 }
