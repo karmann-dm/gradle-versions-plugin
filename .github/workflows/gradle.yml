@@ -17,4 +17,4 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build -x test
     - name: Publish the artifact
-      run: ./gradlew publish --debug
+      run: ./gradlew publish --debug --stacktrace
