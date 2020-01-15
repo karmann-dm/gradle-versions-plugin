@@ -15,6 +15,6 @@ jobs:
       with:
         java-version: 1.11
     - name: Build with Gradle
-      run: ./gradlew build -x test -v
+      run: ./gradlew build -x test
     - name: Publish the artifact
-      run: ./gradlew publish
+      run: ./gradlew publish --debug
