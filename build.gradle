@@ -1,10 +1,11 @@
 plugins {
     id 'java-gradle-plugin'
     id "nebula.integtest" version "7.0.5"
+    id 'maven-publish'
 }
 
 group = 'com.karmanno.plugins'
-version = '0.0.1.SNAPSHOT'
+version = '1.0'
 
 gradlePlugin {
     plugins {
@@ -27,4 +28,30 @@ dependencies {
     testCompile 'com.netflix.nebula:nebula-test:7.2.5'
     testCompileOnly 'org.projectlombok:lombok:1.18.10'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.10'
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/karmann-dm")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+                password = project.findProperty("gpr.key") ?: System.getenv("PASSWORD")
+            }
+        }
+    }
+    publications {
+        maven(MavenPublication) {
+            version = project.version
+            groupId = project.group
+            artifactId = 'cloud-platform-versions-plugin'
+
+            from components.java
+        }
+
+        gpr(MavenPublication) {
+            from(components.java)
+        }
+    }
 }
