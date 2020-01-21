@@ -15,6 +15,9 @@ jobs:
       with:
         java-version: 1.11
     - name: Build with Gradle
-      run: ./gradlew build -x test
-    - name: Publish the artifact
-      run: ./gradlew publish --debug --stacktrace
+      run: ./gradlew build
+    - name: Publish artifact
+      run: ./gradlew publish
+      env:
+        GPR_USER: karmann-dm
+        GPR_KEY: ${{ secrets.GITHUB_TOKEN }}
