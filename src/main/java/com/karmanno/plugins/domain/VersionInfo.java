@@ -1,4 +1,4 @@
-package com.karmanno.plugins;
+package com.karmanno.plugins.domain;
 
 import lombok.Data;
 

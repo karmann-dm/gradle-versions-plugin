@@ -1,14 +1,16 @@
-package com.karmanno.plugins;
+package com.karmanno.plugins.services;
 
+import com.karmanno.plugins.domain.IncreasePriority;
+import com.karmanno.plugins.domain.VersionInfo;
 import com.karmanno.plugins.handlers.VersionIncreaseHandler;
 import org.gradle.internal.impldep.org.eclipse.jgit.revwalk.RevCommit;
 
 import java.util.List;
 
-class VersionsService {
+public class VersionsService {
     private static final String HEADER_DELIMETER = ":";
 
-    VersionInfo calculateNewVersions(VersionInfo previousVersionInfo,
+    public VersionInfo calculateNewVersions(VersionInfo previousVersionInfo,
                                      Iterable<RevCommit> commits) {
 
         IncreasePriority priority = IncreasePriority.NO_PRIORITY;

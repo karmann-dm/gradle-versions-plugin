@@ -1,4 +1,4 @@
-package com.karmanno.plugins;
+package com.karmanno.plugins.utils;
 
 import org.gradle.api.Project;
 import org.gradle.internal.impldep.org.eclipse.jgit.api.Git;
@@ -7,9 +7,9 @@ import org.gradle.internal.impldep.org.eclipse.jgit.internal.storage.file.FileRe
 import java.io.File;
 import java.io.IOException;
 
-class GitUtils {
+public class GitUtils {
 
-    static Git gitRepo(Project project) {
+    public static Git gitRepo(Project project) {
         try {
             File gitDir = getRootGitDir(project.getProjectDir());
             return Git.wrap(new FileRepository(gitDir));
