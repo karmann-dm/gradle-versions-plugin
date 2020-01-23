@@ -19,5 +19,5 @@ jobs:
     - name: Publish artifact
       run: ./gradlew publish
       env:
-        GPR_USER: karmann-dm
-        GPR_KEY: ${{ secrets.GITHUB_TOKEN }}
+        gpr.user: karmann-dm
+        gpr.key: ${{ secrets.GITHUB_TOKEN }}
