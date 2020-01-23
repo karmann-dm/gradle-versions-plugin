@@ -16,8 +16,3 @@ jobs:
         java-version: 1.11
     - name: Build with Gradle
       run: ./gradlew build
-    - name: Publish artifact
-      run: ./gradlew publish
-      env:
-        GH_USERNAME: karmann-dm
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

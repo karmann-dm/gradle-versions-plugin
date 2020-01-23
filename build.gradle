@@ -1,11 +1,12 @@
 plugins {
+    id "com.gradle.plugin-publish" version "0.10.1"
     id 'java-gradle-plugin'
     id "nebula.integtest" version "7.0.5"
     id 'maven-publish'
 }
 
 group = 'com.karmanno.plugins'
-version = '1.2'
+version = '1.0'
 
 gradlePlugin {
     plugins {
@@ -30,23 +31,15 @@ dependencies {
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.10'
 }
 
-publishing {
-    repositories {
-        maven {
-            name = "Github"
-            url = uri("https://maven.pkg.github.com/karmann-dm/cloud-platrofm-versions-plugin")
-            credentials {
-                username = project.findProperty("gpr.user") ?: System.getenv("GH_USERNAME")
-                password = project.findProperty("gpr.key") ?: System.getenv("GH_TOKEN")
-            }
-        }
-    }
-    publications {
-        register("jar", MavenPublication) {
-            from(components["java"])
-            pom {
-                url.set("https://github.com/karmann-dm/cloud-platrofm-versions-plugin.git")
-            }
+pluginBundle {
+    website = 'https://github.com/karmann-dm/cloud-platrofm-versions-plugin'
+    vcsUrl = 'https://github.com/karmann-dm/cloud-platrofm-versions-plugin'
+    description = 'Plugin for auto increase version'
+    tags = ['version', 'semver', 'cloud']
+
+    plugins {
+        versionsPlugin {
+            displayName = 'Gradle versions plugin'
         }
     }
 }
