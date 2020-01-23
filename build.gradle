@@ -36,8 +36,8 @@ publishing {
             name = "Github"
             url = uri("https://maven.pkg.github.com/karmann-dm/cloud-platrofm-versions-plugin")
             credentials {
-                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
-                password = project.findProperty("gpr.key") ?: System.getenv("PASSWORD")
+                username = project.findProperty("gpr.user") ?: System.getenv("GH_USERNAME")
+                password = project.findProperty("gpr.key") ?: System.getenv("GH_TOKEN")
             }
         }
     }
