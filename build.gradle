@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.karmanno.plugins'
-version = '1.0'
+version = '1.2'
 
 gradlePlugin {
     plugins {
@@ -33,37 +33,11 @@ dependencies {
 publishing {
     repositories {
         maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/karmann-dm")
-            credentials {
-                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
-                password = project.findProperty("gpr.key") ?: System.getenv("PASSWORD")
-            }
-        }
-    }
-    publications {
-        maven(MavenPublication) {
-            version = project.version
-            groupId = project.group
-            artifactId = 'cloud-platform-versions-plugin'
-
-            from components.java
-        }
-
-        gpr(MavenPublication) {
-            from(components.java)
-        }
-    }
-}
-
-publishing {
-    repositories {
-        maven {
             name = "Github"
             url = uri("https://maven.pkg.github.com/karmann-dm/cloud-platrofm-versions-plugin")
             credentials {
-                username = project.findProperty("GPR_USER") ?: System.getenv("USERNAME")
-                password = project.findProperty("GPR_KEY") ?: System.getenv("PASSWORD")
+                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+                password = project.findProperty("gpr.key") ?: System.getenv("PASSWORD")
             }
         }
     }
