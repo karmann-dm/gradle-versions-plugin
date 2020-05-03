@@ -1,56 +1,50 @@
-package com.karmanno.plugins.services;
+package com.karmanno.plugins.services
 
-import com.karmanno.plugins.domain.VersionInfo;
-import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.revwalk.RevCommit;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.junit.runner.RunWith;
-import org.junit.runners.BlockJUnit4ClassRunner;
+import com.karmanno.plugins.domain.VersionInfo
+import org.eclipse.jgit.api.Git
+import org.eclipse.jgit.api.errors.GitAPIException
+import org.eclipse.jgit.revwalk.RevCommit
+import org.junit.After
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
+import org.junit.rules.TemporaryFolder
 
-import java.io.IOException;
-import java.util.List;
+import static org.junit.Assert.assertEquals
 
-import static org.junit.Assert.assertEquals;
-
-@RunWith(BlockJUnit4ClassRunner.class)
-public class VersionsServiceTest {
+class VersionsServiceTest {
     @Rule
-    public TemporaryFolder tempFolder = new TemporaryFolder();
+    public TemporaryFolder tempFolder = new TemporaryFolder()
 
-    private Git git;
+    private Git git
 
-    private VersionsService versionsService = new VersionsService();
+    private VersionsService versionsService = new VersionsService()
 
     @Before
-    public void setUp() throws GitAPIException {
+    void setUp() throws GitAPIException {
         git = Git.init().setDirectory( tempFolder.getRoot() ).call();
     }
 
     @After
-    public void tearDown() {
+    void tearDown() {
         git.getRepository().close();
     }
 
     @Test
-    public void correctMajorVersionRelease() throws Exception {
+    void correctMajorVersionRelease() throws Exception {
         VersionInfo newVersion = versionsService.calculateNewVersions(
                 null,
-                git.getRepository().getBranch(),
+                git.repository.branch,
                 prepareWithPriority("global", "fix"));
 
         assertEquals("1.0.0", newVersion.printVersion());
     }
 
     @Test
-    public void correctMinorVersionRelease() throws Exception {
+    void correctMinorVersionRelease() throws Exception {
         VersionInfo newVersion = versionsService.calculateNewVersions(
                 null,
-                git.getRepository().getBranch(),
+                git.repository.branch,
                 prepareWithPriority("feature", "fix")
         );
 
@@ -58,9 +52,9 @@ public class VersionsServiceTest {
     }
 
     @Test
-    public void correctPatchVersionRelease() throws Exception {
+    void correctPatchVersionRelease() throws Exception {
         VersionInfo newVersion = versionsService.calculateNewVersions(null,
-                git.getRepository().getBranch(),
+                git.repository.branch,
                 prepareWithPriority("fix", "fix")
         );
 
@@ -68,7 +62,7 @@ public class VersionsServiceTest {
     }
 
     @Test
-    public void correctVersionSnapshot() throws GitAPIException, IOException {
+    void correctVersionSnapshot() throws GitAPIException, IOException {
         tempFolder.newFile("init.txt");
         git.add().addFilepattern("*").call();
         git.commit().setMessage("fix: new file").call();
@@ -76,7 +70,7 @@ public class VersionsServiceTest {
         git.checkout().setName("dev").call();
 
         VersionInfo newVersion = versionsService.calculateNewVersions(null,
-                git.getRepository().getBranch(),
+                git.repository.branch,
                 prepareWithPriority("global", "fix")
         );
 
