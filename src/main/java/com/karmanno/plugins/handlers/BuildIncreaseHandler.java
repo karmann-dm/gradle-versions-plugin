@@ -27,7 +27,6 @@ public class BuildIncreaseHandler implements VersionIncreaseHandler {
                 .setMinor(previousVersion.getMinor())
                 .setPatch(previousVersion.getPatch())
                 .setBuild(previousVersion.getBuild() + 1)
-                .setBranchName(previousVersion.getBranchName())
-                .setReleaseBranches(previousVersion.getReleaseBranches());
+                .setBranchName(previousVersion.getBranchName());
     }
 }

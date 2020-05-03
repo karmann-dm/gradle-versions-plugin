@@ -22,6 +22,7 @@ repositories {
 }
 
 dependencies {
+    compile group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '5.4.2.201908231537-r'
     compileOnly 'org.projectlombok:lombok:1.18.10'
     annotationProcessor 'org.projectlombok:lombok:1.18.10'
 

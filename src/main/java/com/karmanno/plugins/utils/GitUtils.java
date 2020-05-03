@@ -1,8 +1,8 @@
 package com.karmanno.plugins.utils;
 
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.internal.storage.file.FileRepository;
 import org.gradle.api.Project;
-import org.gradle.internal.impldep.org.eclipse.jgit.api.Git;
-import org.gradle.internal.impldep.org.eclipse.jgit.internal.storage.file.FileRepository;
 
 import java.io.File;
 import java.io.IOException;

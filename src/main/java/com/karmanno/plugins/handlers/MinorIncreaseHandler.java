@@ -29,7 +29,6 @@ public class MinorIncreaseHandler implements VersionIncreaseHandler {
                 .setMinor(previousVersion.getMinor() + 1)
                 .setPatch(0)
                 .setBuild(0)
-                .setBranchName(previousVersion.getBranchName())
-                .setReleaseBranches(previousVersion.getReleaseBranches());
+                .setBranchName(previousVersion.getBranchName());
     }
 }

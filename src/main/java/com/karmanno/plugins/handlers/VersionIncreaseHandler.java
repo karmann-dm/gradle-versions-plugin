@@ -10,16 +10,25 @@ public interface VersionIncreaseHandler {
     IncreasePriority getSupportablePriority();
     VersionInfo handle(VersionInfo previousVersion);
 
-    static List<VersionIncreaseHandler> handlers() {
+    static List<VersionIncreaseHandler> releaseHandlers() {
         return List.of(
                 new MajorIncreaseHandler(),
                 new MinorIncreaseHandler(),
-                new PatchIncreaseHandler(),
+                new PatchIncreaseHandler()
+        );
+    }
+
+    static List<VersionIncreaseHandler> snapshotHandlers() {
+        return List.of(
                 new BuildIncreaseHandler()
         );
     }
 
-    static VersionIncreaseHandler defaultHandler() {
+    static VersionIncreaseHandler defaultReleaseHandler() {
         return new NoIncreaseHandler();
+    }
+
+    static VersionIncreaseHandler defaultSnapshotHandler() {
+        return new BuildIncreaseHandler();
     }
 }

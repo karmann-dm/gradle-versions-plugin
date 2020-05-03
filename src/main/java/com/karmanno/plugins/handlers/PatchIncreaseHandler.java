@@ -27,7 +27,6 @@ public class PatchIncreaseHandler implements VersionIncreaseHandler {
                 .setMinor(previousVersion.getMinor())
                 .setPatch(previousVersion.getPatch() + 1)
                 .setBuild(0)
-                .setBranchName(previousVersion.getBranchName())
-                .setReleaseBranches(previousVersion.getReleaseBranches());
+                .setBranchName(previousVersion.getBranchName());
     }
 }
