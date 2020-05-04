@@ -32,12 +32,14 @@ public class PrintVersionTask extends DefaultTask {
             ObjectId headId = git.getRepository().resolve(Constants.HEAD);
             Iterable<RevCommit> commitsBetweenHeadAndLatestTag = git.log().addRange(latestTagId, headId).call();
 
-            new VersionsService()
+            String version = new VersionsService()
                     .calculateNewVersions(latestVersionInfo, branchName, commitsBetweenHeadAndLatestTag)
                     .printVersion();
+            getLogger().info(version);
         } catch (Exception e) {
-            new VersionInfo()
+            String version = new VersionInfo()
                     .printVersion();
+            getLogger().info(version);
         }
     }
 }
