@@ -15,6 +15,7 @@ class VersionsPluginTest extends IntegrationSpec {
     @Test
     def "should print snapshot"() {
         given:
+        setProjectDir(temporaryFolder.getRoot())
         settingsFile << "rootProject.name = 'some-project'"
         buildFile << applyPlugin(VersionsPlugin)
 
@@ -24,18 +25,5 @@ class VersionsPluginTest extends IntegrationSpec {
         then:
         result.wasExecuted("printVersion")
         result.success
-    }
-
-    @Test
-    def "should print release"() {
-        given:
-        settingsFile << "rootProject.name = 'some-project'"
-        buildFile << applyPlugin(VersionsPlugin)
-
-        when:
-        def result = runTasks("printVersion")
-
-        then:
-        result.wasExecuted("printVersion")
     }
 }
