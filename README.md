@@ -20,11 +20,15 @@ The decision of which commit should be chosen as prior is making based on the pr
 3. `fix/FIX` - increase of the patch version
 4. `build/BUILD` - increase build subversion
 
+Version numbers start from the basic start - version `0.0.1`. After this version, plugin will generate new version according to the commit list. This version can be printed by calling `printVersion` task and it can be used in further CI/CD pipelines for automatic versioning of your project.
+
 ### Releases
 
-By default commits, listed in `master` branch are counted as release commits, otherwise - as snapshot commits. Release commit consists of only `major`, `minor` and `patch` version components. For example version `c` can be considered as release version.
+By default commits, listed in `master` branch are counted as release commits, otherwise - as snapshot commits. Release version consists of only `major`, `minor` and `patch` version components. For example version `2.4.12` can be considered as release version.
 
 ### Snapshots
+
+Snapshot version consists of `major`, `minor`, `patch`, `branch` and `build` version components. For example version `2.10.43.dev.32` can be considered as snapshot version.
 
 ## Examples
 
