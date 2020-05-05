@@ -20,6 +20,10 @@ The decision of which commit should be chosen as prior is making based on the pr
 3. `fix/FIX` - increase of the patch version
 4. `build/BUILD` - increase build subversion
 
+### Releases
+
+By default commits, listed in `master` branch are counted as release commits, otherwise - as snapshot commits. Release commit consists of only `major`, `minor` and `patch` version components. For example version `c` can be considered as release version.
+
 ### Snapshots
 
 ## Examples
