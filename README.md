@@ -2,6 +2,32 @@
 
 Semver plugin for gradle
 
+## Simple usage
+
+Import plugin into your project using Gradle Plugin DSL
+```
+plugins {
+  id "com.karmanno.plugins.semver" version "1.2"
+}
+```
+Or using legacy Gradle plugins API
+```
+buildscript {
+  repositories {
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
+  }
+  dependencies {
+    classpath "com.karmanno.plugins:gradle-versions-plugin:1.2"
+  }
+}
+
+apply plugin: "com.karmanno.plugins.semver"
+```
+Then, you will have access to the task `printVersion`, which is designed for the printing the next version
+of your project. This version can be recorded in any CI/CD pipeline and it can be used for tagging any artifacts or git commits.
+
 ## Principles of work
 
 ### Version structure
@@ -25,6 +51,7 @@ Version numbers start from the basic start - version `0.0.1`. After this version
 ### Releases
 
 By default commits, listed in `master` branch are counted as release commits, otherwise - as snapshot commits. Release version consists of only `major`, `minor` and `patch` version components. For example version `2.4.12` can be considered as release version.
+In the release versioning strategy there is several ways to increase version elements. 
 
 ### Snapshots
 
@@ -32,12 +59,4 @@ Snapshot version consists of `major`, `minor`, `patch`, `branch` and `build` ver
 
 ## Examples
 
-```
-(branch master)
-X -> (fix: new fix 1) -> (fix: new fix 2) -> (feature: new feature _ HEAD)
-```
-Then, the task `printVersion` will display version `0.1.0`
-```
-./gradlew printVersion -> 0.1.0
-```
 ## FAQ
