@@ -23,7 +23,7 @@ public class PrintVersionTask extends DefaultTask {
         Project project = getProject();
         Git git = GitUtils.gitRepo(project);
         String version = getVersion(git).printVersion();
-        getLogger().info(version);
+        System.out.println(version);
     }
 
     @SneakyThrows
