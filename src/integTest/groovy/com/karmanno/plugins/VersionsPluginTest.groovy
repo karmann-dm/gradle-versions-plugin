@@ -64,4 +64,24 @@ class VersionsPluginTest extends IntegrationSpec {
         result.success
         result.standardOutput.contains("1.2.3.dev.1")
     }
+
+    @Test
+    def 'should print initial'() {
+        given:
+
+        git = Git.init().setDirectory(getProjectDir()).call()
+        git.commit().setMessage("Initial").call()
+
+        settingsFile << "rootProject.name = 'some-project'"
+        buildFile << applyPlugin(VersionsPlugin)
+
+        when:
+        def result = runTasks("printVersion")
+        git.close()
+
+        then:
+        result.wasExecuted("printVersion")
+        result.success
+        result.standardOutput.contains("0.0.1")
+    }
 }

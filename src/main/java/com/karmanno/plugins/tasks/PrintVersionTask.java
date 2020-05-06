@@ -22,10 +22,19 @@ public class PrintVersionTask extends DefaultTask {
     public void doTask() {
         Project project = getProject();
         Git git = GitUtils.gitRepo(project);
+        String version = getVersion(git).printVersion();
+        getLogger().info(version);
+    }
 
+    @SneakyThrows
+    private VersionInfo getVersion(Git git) {
         String branchName = git.getRepository().getBranch();
 
         List<Ref> tagList = git.tagList().call();
+
+        if(tagList.size() == 0)
+            return new VersionInfo().setBranchName(branchName);
+
         Ref latestTag = tagList.get(tagList.size() - 1);
         VersionInfo latestVersionInfo = VersionInfo.fromTagString(latestTag.getName());
 
@@ -34,9 +43,7 @@ public class PrintVersionTask extends DefaultTask {
                 .addRange(git.getRepository().peel(latestTag).getPeeledObjectId(), headId)
                 .call();
 
-        String version = new VersionsService()
-                .calculateNewVersions(latestVersionInfo, branchName, commitsBetweenHeadAndLatestTag)
-                .printVersion();
-        getLogger().info(version);
+        return new VersionsService()
+                .calculateNewVersions(latestVersionInfo, branchName, commitsBetweenHeadAndLatestTag);
     }
 }
