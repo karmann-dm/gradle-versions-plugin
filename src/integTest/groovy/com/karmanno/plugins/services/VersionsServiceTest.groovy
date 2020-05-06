@@ -63,7 +63,13 @@ class VersionsServiceTest {
 
     @Test
     void correctMinorVersionFromAnotherTagRelease() throws Exception {
-        throw new RuntimeException();
+        VersionInfo newVersion = versionsService.calculateNewVersions(
+                VersionInfo.fromTagString("4.4.12"),
+                git.repository.branch,
+                prepareWithPriority("feature", "fix")
+        );
+
+        assertEquals("4.5.0", newVersion.printVersion());
     }
 
     @Test
@@ -78,7 +84,12 @@ class VersionsServiceTest {
 
     @Test
     void correctPatchVersionFromAnotherTagRelease() throws Exception {
-        throw new RuntimeException();
+        VersionInfo newVersion = versionsService.calculateNewVersions(VersionInfo.fromTagString("1.4.3"),
+                git.repository.branch,
+                prepareWithPriority("fix", "fix")
+        );
+
+        assertEquals("1.4.4", newVersion.printVersion());
     }
 
     @Test
@@ -99,7 +110,18 @@ class VersionsServiceTest {
 
     @Test
     void correctVersionSnapshotFromAnotherTag() throws GitAPIException, IOException {
-        throw new RuntimeException();
+        tempFolder.newFile("init.txt");
+        git.add().addFilepattern("*").call();
+        git.commit().setMessage("fix: new file").call();
+        git.branchCreate().setName("dev").call();
+        git.checkout().setName("dev").call();
+
+        VersionInfo newVersion = versionsService.calculateNewVersions(VersionInfo.fromTagString("2.4.2.dev.12"),
+                git.repository.branch,
+                prepareWithPriority("global", "fix")
+        );
+
+        assertEquals("2.4.2.dev.13", newVersion.printVersion());
     }
 
     private List<RevCommit> prepareWithPriority(String priority, String others) throws IOException, GitAPIException {
