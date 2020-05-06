@@ -8,9 +8,9 @@ import org.gradle.api.Project
 
 class VersionsPlugin implements Plugin<Project> {
     public static final String PRINT_VERSION_TASK = "printVersion"
-    public static final String ASSIGN_VERSION_TASK = "assignVersion"
     public static final String ASSIGN_TAG_TASK = "assignTag"
-    public static final String INIT_TASK = "init"
+    public static final String ASSIGN_VERSION_TASK = "assignVersion"
+    public static final String BUILD_TASK = "build"
 
     @Override
     void apply(Project project) {
@@ -19,7 +19,7 @@ class VersionsPlugin implements Plugin<Project> {
 
         project.afterEvaluate {
             def assignVersionTask = project.tasks.register(ASSIGN_VERSION_TASK, AssignVersionTask)
-            project.tasks.findByName(INIT_TASK).with {
+            project.tasks.findByName(BUILD_TASK).with {
                 dependsOn assignVersionTask
             }
         }

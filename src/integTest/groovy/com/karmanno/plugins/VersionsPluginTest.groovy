@@ -90,10 +90,11 @@ class VersionsPluginTest extends IntegrationSpec {
         given:
         git = Git.init().setDirectory(getProjectDir()).call()
         settingsFile << "rootProject.name = 'some-project'"
-        buildFile << applyPlugin(VersionsPlugin)
+        buildFile << "${applyPlugin(VersionsPlugin)}\n" +
+                "apply plugin: 'java'"
 
         when:
-        def result = runTasks("init")
+        def result = runTasks("build")
 
         then:
         result.wasExecuted("assignVersion")
