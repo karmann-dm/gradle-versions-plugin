@@ -24,5 +24,8 @@ public class AssignTagTask extends DefaultTask {
                         git.getRepository().resolve(Constants.HEAD)
                 )
         ).setName(version).call();
+        try {
+            git.push().setRemote("origin").setPushTags().call();
+        } catch (Exception ignored) {}
     }
 }
