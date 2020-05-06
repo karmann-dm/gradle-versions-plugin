@@ -84,4 +84,38 @@ class VersionsPluginTest extends IntegrationSpec {
         result.success
         result.standardOutput.contains("0.0.1")
     }
+
+    @Test
+    def 'should assign task after build'() {
+        given:
+        git = Git.init().setDirectory(getProjectDir()).call()
+        settingsFile << "rootProject.name = 'some-project'"
+        buildFile << applyPlugin(VersionsPlugin)
+
+        when:
+        def result = runTasks("init")
+
+        then:
+        result.wasExecuted("assignVersion")
+        result.success
+    }
+
+    @Test
+    def 'should put tag'() {
+        given:
+        git = Git.init().setDirectory(getProjectDir()).call()
+        git.commit().setMessage("Initial").call()
+        settingsFile << "rootProject.name = 'some-project'"
+        buildFile << applyPlugin(VersionsPlugin)
+
+        when:
+        def result = runTasks("assignTag")
+        def tagList = git.tagList().call()
+
+        then:
+        result.success
+        result.wasExecuted("assignTag")
+        tagList.size() == 1
+        tagList.get(0).name.contains("0.0.1")
+    }
 }

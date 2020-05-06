@@ -7,13 +7,12 @@ import org.gradle.api.DefaultTask;
 import org.gradle.api.Project;
 import org.gradle.api.tasks.TaskAction;
 
-public class PrintVersionTask extends DefaultTask {
-
+public class AssignVersionTask extends DefaultTask {
     @TaskAction
-    public void doTask() {
+    public void doAction() {
         Project project = getProject();
         Git git = GitUtils.gitRepo(project);
         String version = new PrepareVersionService().getVersion(git).printVersion();
-        System.out.println(version);
+        project.setVersion(version);
     }
 }
