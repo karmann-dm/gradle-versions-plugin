@@ -1,6 +1,6 @@
 # gradle-versions-plugin
 
-Semver plugin for gradle
+Semver plugin for gradle https://plugins.gradle.org/plugin/com.karmanno.plugins.semver
 
 ## Simple usage
 
