@@ -99,4 +99,15 @@ public class VersionInfoTest {
         assertEquals(4, info.getBuild().intValue());
         assertEquals("dev", info.getBranchName());
     }
+
+    @Test
+    public void testGlobalTag() {
+        String versionString = "global/refs/1.2.3";
+
+        VersionInfo info = VersionInfo.fromTagString(versionString);
+
+        assertEquals(1, info.getMajor().intValue());
+        assertEquals(2, info.getMinor().intValue());
+        assertEquals(3, info.getPatch().intValue());
+    }
 }

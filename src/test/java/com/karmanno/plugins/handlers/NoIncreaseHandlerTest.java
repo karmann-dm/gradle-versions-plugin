@@ -14,7 +14,7 @@ public class NoIncreaseHandlerTest {
         NoIncreaseHandler increaseHandler = new NoIncreaseHandler();
         VersionInfo info = VersionInfo.fromTagString("1.2.3.dev.4");
 
-        VersionInfo newInfo = increaseHandler.handle(info);
+        VersionInfo newInfo = increaseHandler.handle(info, "dev");
 
         assertEquals(1, newInfo.getMajor().intValue());
         assertEquals(2, newInfo.getMinor().intValue());

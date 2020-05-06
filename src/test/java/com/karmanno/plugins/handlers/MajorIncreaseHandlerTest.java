@@ -14,7 +14,7 @@ public class MajorIncreaseHandlerTest {
         MajorIncreaseHandler increaseHandler = new MajorIncreaseHandler();
         VersionInfo info = VersionInfo.fromTagString("1.2.3.dev.4");
 
-        VersionInfo newInfo = increaseHandler.handle(info);
+        VersionInfo newInfo = increaseHandler.handle(info, "dev");
 
         assertEquals(2, newInfo.getMajor().intValue());
         assertEquals(0, newInfo.getMinor().intValue());

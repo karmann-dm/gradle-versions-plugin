@@ -51,7 +51,7 @@ public class VersionsService {
                 .findFirst()
                 .orElse(defaultHandler);
 
-        return increaseHandler.handle(previousVersionInfo);
+        return increaseHandler.handle(previousVersionInfo, branch);
     }
 
     private IncreasePriority extractPriority(String prefix, boolean release) {

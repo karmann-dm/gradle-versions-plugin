@@ -8,7 +8,7 @@ import java.util.List;
 public interface VersionIncreaseHandler {
     List<String> getSupportablePatterns();
     IncreasePriority getSupportablePriority();
-    VersionInfo handle(VersionInfo previousVersion);
+    VersionInfo handle(VersionInfo previousVersion, String branchName);
 
     static List<VersionIncreaseHandler> releaseHandlers() {
         return List.of(

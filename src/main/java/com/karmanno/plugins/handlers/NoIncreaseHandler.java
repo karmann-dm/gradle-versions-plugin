@@ -18,7 +18,7 @@ public class NoIncreaseHandler implements VersionIncreaseHandler {
     }
 
     @Override
-    public VersionInfo handle(VersionInfo previousVersion) {
+    public VersionInfo handle(VersionInfo previousVersion, String branchName) {
         return previousVersion;
     }
 }

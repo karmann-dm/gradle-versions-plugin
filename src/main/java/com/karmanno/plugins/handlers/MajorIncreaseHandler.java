@@ -22,12 +22,12 @@ public class MajorIncreaseHandler implements VersionIncreaseHandler {
     }
 
     @Override
-    public VersionInfo handle(VersionInfo previousVersion) {
+    public VersionInfo handle(VersionInfo previousVersion, String branchName) {
         return new VersionInfo()
                 .setMajor(previousVersion.getMajor() + 1)
                 .setMinor(0)
                 .setPatch(0)
                 .setBuild(0)
-                .setBranchName(previousVersion.getBranchName());
+                .setBranchName(branchName);
     }
 }

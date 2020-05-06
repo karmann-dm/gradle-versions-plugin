@@ -23,7 +23,7 @@ public class MinorIncreaseHandler implements VersionIncreaseHandler {
     }
 
     @Override
-    public VersionInfo handle(VersionInfo previousVersion) {
+    public VersionInfo handle(VersionInfo previousVersion, String branchName) {
         return new VersionInfo()
                 .setMajor(previousVersion.getMajor())
                 .setMinor(previousVersion.getMinor() + 1)

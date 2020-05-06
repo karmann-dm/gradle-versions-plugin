@@ -21,12 +21,12 @@ public class BuildIncreaseHandler implements VersionIncreaseHandler {
     }
 
     @Override
-    public VersionInfo handle(VersionInfo previousVersion) {
+    public VersionInfo handle(VersionInfo previousVersion, String branchName) {
         return new VersionInfo()
                 .setMajor(previousVersion.getMajor())
                 .setMinor(previousVersion.getMinor())
                 .setPatch(previousVersion.getPatch())
-                .setBuild(previousVersion.getBuild() + 1)
-                .setBranchName(previousVersion.getBranchName());
+                .setBuild(previousVersion.getBuild() == null ? 1 : previousVersion.getBuild() + 1)
+                .setBranchName(branchName);
     }
 }

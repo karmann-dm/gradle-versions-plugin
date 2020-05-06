@@ -42,7 +42,12 @@ class VersionsServiceTest {
 
     @Test
     void correctMajorVersionFromAnotherTagRelease() throws Exception {
-        throw new RuntimeException();
+        VersionInfo newVersion = versionsService.calculateNewVersions(
+                VersionInfo.fromTagString("0.3.43"),
+                git.repository.branch,
+                prepareWithPriority("global", "fix"));
+
+        assertEquals("1.0.0", newVersion.printVersion())
     }
 
     @Test
@@ -76,7 +81,6 @@ class VersionsServiceTest {
         throw new RuntimeException();
     }
 
-
     @Test
     void correctVersionSnapshot() throws GitAPIException, IOException {
         tempFolder.newFile("init.txt");
@@ -109,4 +113,4 @@ class VersionsServiceTest {
 
         return List.of(initial, second, third);
     }
-}
+ }

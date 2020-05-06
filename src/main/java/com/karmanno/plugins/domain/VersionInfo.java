@@ -41,7 +41,14 @@ public class VersionInfo {
      * Snapshot 1.2.3.branch.123
      */
     public static VersionInfo fromTagString(String tag) {
-        String[] tokens = tag.split("\\.");
+        String tagString;
+        if (isGlobalFormat(tag)) {
+            tagString = tag.split("/")[2];
+        } else {
+            tagString = tag;
+        }
+
+        String[] tokens = tagString.split("\\.");
         Integer major = Integer.parseInt(tokens[0]);
         Integer minor = Integer.parseInt(tokens[1]);
         Integer patch = Integer.parseInt(tokens[2]);
@@ -63,5 +70,9 @@ public class VersionInfo {
 
     public boolean isSnapshot() {
         return "master".equals(branchName);
+    }
+
+    private static boolean isGlobalFormat(String tag) {
+        return tag.split("/").length == 3;
     }
 }
