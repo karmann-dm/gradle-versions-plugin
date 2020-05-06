@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'com.karmanno.plugins'
-version = '1.7'
+version = '1.8'
 
 gradlePlugin {
     plugins {
