@@ -41,6 +41,11 @@ class VersionsServiceTest {
     }
 
     @Test
+    void correctMajorVersionFromAnotherTagRelease() throws Exception {
+        throw new RuntimeException();
+    }
+
+    @Test
     void correctMinorVersionRelease() throws Exception {
         VersionInfo newVersion = versionsService.calculateNewVersions(
                 null,
@@ -52,6 +57,11 @@ class VersionsServiceTest {
     }
 
     @Test
+    void correctMinorVersionFromAnotherTagRelease() throws Exception {
+        throw new RuntimeException();
+    }
+
+    @Test
     void correctPatchVersionRelease() throws Exception {
         VersionInfo newVersion = versionsService.calculateNewVersions(null,
                 git.repository.branch,
@@ -60,6 +70,12 @@ class VersionsServiceTest {
 
         assertEquals("0.0.2", newVersion.printVersion());
     }
+
+    @Test
+    void correctPatchVersionFromAnotherTagRelease() throws Exception {
+        throw new RuntimeException();
+    }
+
 
     @Test
     void correctVersionSnapshot() throws GitAPIException, IOException {
@@ -75,6 +91,11 @@ class VersionsServiceTest {
         );
 
         assertEquals("0.0.1.dev.2", newVersion.printVersion());
+    }
+
+    @Test
+    void correctVersionSnapshotFromAnotherTag() throws GitAPIException, IOException {
+        throw new RuntimeException();
     }
 
     private List<RevCommit> prepareWithPriority(String priority, String others) throws IOException, GitAPIException {
