@@ -26,7 +26,8 @@ class VersionsPluginTest extends IntegrationSpec {
         git.commit().setMessage("feat: whaaat").call()
 
         settingsFile << "rootProject.name = 'some-project'"
-        buildFile << applyPlugin(VersionsPlugin)
+        buildFile << "${applyPlugin(VersionsPlugin)}\n" +
+                "apply plugin: 'java'"
 
         when:
         def result = runTasks("printVersion")
@@ -53,7 +54,8 @@ class VersionsPluginTest extends IntegrationSpec {
         git.commit().setMessage("global: whaaat").call()
 
         settingsFile << "rootProject.name = 'some-project'"
-        buildFile << applyPlugin(VersionsPlugin)
+        buildFile << "${applyPlugin(VersionsPlugin)}\n" +
+                "apply plugin: 'java'"
 
         when:
         def result = runTasks("printVersion")
@@ -73,7 +75,8 @@ class VersionsPluginTest extends IntegrationSpec {
         git.commit().setMessage("Initial").call()
 
         settingsFile << "rootProject.name = 'some-project'"
-        buildFile << applyPlugin(VersionsPlugin)
+        buildFile << "${applyPlugin(VersionsPlugin)}\n" +
+                "apply plugin: 'java'"
 
         when:
         def result = runTasks("printVersion")
@@ -107,7 +110,8 @@ class VersionsPluginTest extends IntegrationSpec {
         git = Git.init().setDirectory(getProjectDir()).call()
         git.commit().setMessage("Initial").call()
         settingsFile << "rootProject.name = 'some-project'"
-        buildFile << applyPlugin(VersionsPlugin)
+        buildFile << "${applyPlugin(VersionsPlugin)}\n" +
+                "apply plugin: 'java'"
 
         when:
         def result = runTasks("assignTag")
@@ -118,5 +122,22 @@ class VersionsPluginTest extends IntegrationSpec {
         result.wasExecuted("assignTag")
         tagList.size() == 1
         tagList.get(0).name.contains("0.0.1")
+    }
+
+    @Test
+    def 'should print artifact'() {
+        given:
+        git = Git.init().setDirectory(getProjectDir()).call()
+        settingsFile << "rootProject.name = 'some-project'"
+        buildFile << "${applyPlugin(VersionsPlugin)}\n" +
+                "apply plugin: 'java'"
+
+        when:
+        def result = runTasks("printArtifact")
+
+        then:
+        result.standardOutput.contains("some-project:0.0.1")
+        result.wasExecuted("printArtifact")
+        result.success
     }
 }
