@@ -7,6 +7,7 @@ Semver plugin for gradle https://plugins.gradle.org/plugin/com.karmanno.plugins.
 Import plugin into your project using Gradle Plugin DSL
 ```
 plugins {
+  id 'java'
   id "com.karmanno.plugins.semver" version "1.2"
 }
 ```
@@ -28,6 +29,14 @@ apply plugin: "com.karmanno.plugins.semver"
 Then, you will have access to the task `printVersion`, which is designed for the printing the next version
 of your project. This version can be recorded in any CI/CD pipeline and it can be used for tagging any artifacts or git commits.
 
+#### Tasks
+`printVersion` - prints next recommended version to the stdout (better use in quiet mode and console-plain mode like `./gradlew --console=plain -q printVersion`
+
+`assignVersion` - assigns next version to the `project.version` Gradle property. The `build` task if exists depends of task `assignVersion`
+
+`printArtifact` - prints next version in format `PROJECT_NAME:VERSION`, for simple usage in CI/CD pipeline
+
+`assignTag` - assigns git tag with next version on HEAD commit
 ## Principles of work
 
 ### Version structure
