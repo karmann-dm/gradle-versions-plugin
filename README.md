@@ -9,7 +9,7 @@ Import plugin into your project using Gradle Plugin DSL
 ```
 plugins {
   id 'java'
-  id "com.karmanno.plugins.semver" version "1.2"
+  id "com.karmanno.plugins.semver" version "1.14"
 }
 ```
 Or using legacy Gradle plugins API
