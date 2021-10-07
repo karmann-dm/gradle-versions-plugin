@@ -2,6 +2,7 @@ package com.karmanno.plugins
 
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.lib.Constants
+import org.eclipse.jgit.lib.Ref
 import org.eclipse.jgit.revwalk.RevCommit
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
@@ -25,12 +26,12 @@ open class PrintVersionTask: DefaultTask() {
         if (tagList.isEmpty())
             return CurrentVersion(versionInfo = VersionInfo(branchName = branch), branch = branch)
 
-        val latestTag = tagList.last()
+        val (latestTag, latestTagCommit) = calculateLatestTagCommit(tagList, git)
+        val headId = git.repository.resolve(Constants.HEAD)
         val latestVersionInfo = VersionInfo.fromString(latestTag.name)
 
-        val headId = git.repository.resolve(Constants.HEAD)
         val commits = git.log()
-            .addRange(git.repository.refDatabase.peel(latestTag).peeledObjectId, headId)
+            .addRange(latestTagCommit, headId)
             .call()
 
         return CurrentVersion(
@@ -38,6 +39,36 @@ open class PrintVersionTask: DefaultTask() {
             commits = commits,
             branch = branch
         )
+    }
+
+    private fun calculateLatestTagCommit(tagList: List<Ref>, git: Git): Pair<Ref, RevCommit> {
+        var latestTag = tagList.first()
+        var latestCommitForLatestTag = calculateLatestDateOfTag(git, latestTag)
+
+        tagList.forEach {
+            val commit = calculateLatestDateOfTag(git, it)
+            if (commit.authorIdent.`when`.after(latestCommitForLatestTag.authorIdent.`when`)) {
+                latestTag = it
+                latestCommitForLatestTag = commit
+            }
+        }
+
+        return Pair(latestTag, latestCommitForLatestTag)
+    }
+
+    private fun calculateLatestDateOfTag(git: Git, ref: Ref): RevCommit {
+        val log = git.log()
+
+        val peeledRef = git.repository.refDatabase.peel(ref)
+        if (peeledRef.peeledObjectId != null) {
+            log.add(peeledRef.peeledObjectId)
+        } else {
+            log.add(ref.objectId)
+        }
+
+        val logs = log.call().sortedBy { commit -> commit.authorIdent.`when` }.toList()
+
+        return logs.last()
     }
 }
 

@@ -6,6 +6,7 @@ import org.gradle.api.Project
 import org.gradle.testfixtures.ProjectBuilder
 
 class PrintVersionTaskTest: WordSpec({
+
     "Using the Plugin ID" should {
         "Apply the plugin" { withProject {
             it.plugins.getPlugin(VersionsPlugin::class.java) shouldNotBe null

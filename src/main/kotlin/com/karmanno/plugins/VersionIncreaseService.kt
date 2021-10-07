@@ -40,6 +40,10 @@ class VersionIncreaseService {
             }
         }
 
+        if (strategy is NoIncreaseStrategy) {
+            project.logger.warn("Warning: no version increase strategy found. Version remain untouched.")
+        }
+
         return strategy
     }
 

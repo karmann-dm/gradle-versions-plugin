@@ -1,7 +1,7 @@
 package com.karmanno.plugins
 
 class VersionInfo(
-    val branchName: String = "master",
+    val branchName: String = DEFAULT_BRANCH,
     var major: Int = 0,
     var minor: Int = 0,
     var patch: Int = 0,
@@ -12,16 +12,20 @@ class VersionInfo(
         const val DEFAULT_BRANCH = "master"
 
         fun fromString(tag: String): VersionInfo {
-            val tagString = if(isGlobal(tag)) { tag.split("/")[2] } else tag
+            val tagString = if(isGlobal(tag)) { tag.split("/").last() } else tag
 
-            val tokens = tagString.split("\\.")
-            val (major, minor, patch) = Triple(tokens[0].toInt(), tokens[1].toInt(), tokens[2].toInt())
-            val (branch, build) = if (tokens.size == 5) Pair(tokens[3], tokens[4].toInt()) else Pair(null, null)
+            return try {
+                val tokens = tagString.split(".")
+                val (major, minor, patch) = Triple(tokens[0].toInt(), tokens[1].toInt(), tokens[2].toInt())
+                val (branch, build) = if (tokens.size == 5) Pair(tokens[3], tokens[4].toInt()) else Pair(null, null)
 
-            return VersionInfo(
-                branchName = branch ?: DEFAULT_BRANCH,
-                major = major, minor = minor, patch = patch, build = build
-            )
+                VersionInfo(
+                    branchName = branch ?: DEFAULT_BRANCH,
+                    major = major, minor = minor, patch = patch, build = build
+                )
+            } catch (e: Exception) {
+                VersionInfo()
+            }
         }
 
         private fun isGlobal(tag: String): Boolean = tag.split("/").size == 3
