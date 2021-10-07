@@ -24,11 +24,20 @@ open class PrintVersionTask: DefaultTask() {
         val tagList = git.tagList().call()
 
         if (tagList.isEmpty())
-            return CurrentVersion(versionInfo = VersionInfo(branchName = branch), branch = branch)
+            return CurrentVersion(versionInfo = VersionInfo(patch = 1, branchName = branch), branch = branch)
 
         val (latestTag, latestTagCommit) = calculateLatestTagCommit(tagList, git)
         val headId = git.repository.resolve(Constants.HEAD)
         val latestVersionInfo = VersionInfo.fromString(latestTag.name)
+
+        if (latestVersionInfo.branchName == VersionInfo.DEFAULT_BRANCH) {
+            if (branch != VersionInfo.DEFAULT_BRANCH) {
+                latestVersionInfo.apply {
+                    branchName = branch
+                    build = 0
+                }
+            }
+        }
 
         val commits = git.log()
             .addRange(latestTagCommit, headId)

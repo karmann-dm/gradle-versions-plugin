@@ -7,7 +7,7 @@ interface IncreaseStrategy {
 
     companion object {
         fun release() = listOf(
-            MajorIncreaseStrategy(), MinorIncreaseStrategy(), PatchIncreaseStrategy()
+            MajorIncreaseStrategy(), MinorIncreaseStrategy(), PatchIncreaseStrategy(), BuildIncreaseStrategy()
         )
 
         fun snapshot() = listOf(BuildIncreaseStrategy())

@@ -9,11 +9,11 @@ class VersionIncreaseService {
     }
 
     fun calculateNext(project: Project, currentVersion: CurrentVersion,): VersionInfo {
-        val versionToIncrease = if (currentVersion.commits == null) {
-            return VersionInfo(branchName = currentVersion.branch)
-        } else currentVersion.versionInfo
-
-        val strategy = extractStrategyFromCommits(currentVersion.commits.toList(), project, currentVersion.branch)
+        val versionToIncrease = currentVersion.versionInfo
+        val strategy = extractStrategyFromCommits(
+            currentVersion.commits?.toList() ?: emptyList(),
+            project, currentVersion.branch
+        )
         return strategy.increase(versionToIncrease)
     }
 
@@ -50,9 +50,9 @@ class VersionIncreaseService {
     private fun isRelease(branch: String) = VersionInfo.DEFAULT_BRANCH == branch
 
     private fun extractIncreaseStrategy(prefix: String, release: Boolean) =
-        ( if(release) IncreaseStrategy.release() else IncreaseStrategy.snapshot() )
-            .filter { it.supportablePatterns().contains(prefix.toLowerCase()) }
-            .first()
+        (if (release) IncreaseStrategy.release() else IncreaseStrategy.snapshot()).first {
+            it.supportablePatterns().contains(prefix.toLowerCase())
+        }
 
     private fun prefixInvalid(prefix: List<String>) = prefix.size < 2
 }

@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     kotlin("jvm") version "1.4.31"
     id("java-gradle-plugin")
+    id("com.gradle.plugin-publish") version "0.14.0"
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_11
@@ -14,7 +15,13 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.eclipse.jgit:org.eclipse.jgit:5.4.2.201908231537-r")
+
+    // Test dependencies
     testImplementation("io.kotlintest:kotlintest-runner-junit5:3.1.10")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.4.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.4.2")
+    testImplementation("org.assertj:assertj-core:3.11.1")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.4.2")
 }
 
 repositories {
@@ -37,45 +44,16 @@ gradlePlugin {
     plugins {
         create("semverPlugin") {
             id = "com.karmanno.plugins.semver"
+            displayName = "Gradle Versions Plugin"
+            description = "Plugin for automatic versions management inspired by SemVer concepts"
             implementationClass = "com.karmanno.plugins.VersionsPlugin"
         }
     }
 }
 
-//gradlePlugin {
-//    plugins {
-//        semverPlugin {
-//            id = 'com.karmanno.plugins.semver'
-//            implementationClass = 'com.karmanno.plugins.VersionsPlugin'
-//        }
-//    }
-//}
-//
-//
-//dependencies {
-//    compile group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '5.4.2.201908231537-r'
-//    compileOnly 'org.projectlombok:lombok:1.18.10'
-//    annotationProcessor 'org.projectlombok:lombok:1.18.10'
-//
-//    testImplementation 'junit:junit:4.13'
-//    testCompile 'com.netflix.nebula:nebula-test:7.2.5'
-//    testCompileOnly 'org.projectlombok:lombok:1.18.10'
-//    testAnnotationProcessor 'org.projectlombok:lombok:1.18.10'
-//    testImplementation gradleTestKit()
-//
-//    testImplementation 'org.codehaus.groovy:groovy-all:2.5.7'
-//    testImplementation 'org.spockframework:spock-core:1.3-groovy-2.5'
-//}
-//
-//pluginBundle {
-//    website = 'https://github.com/karmann-dm/gradle-versions-plugin'
-//    vcsUrl = 'https://github.com/karmann-dm/gradle-versions-plugin'
-//    description = 'Plugin for auto increase version'
-//    tags = ['version', 'semver', 'automatic-versioning']
-//
-//    plugins {
-//        semverPlugin {
-//            displayName = 'Gradle versions plugin'
-//        }
-//    }
-//}
+pluginBundle {
+    website = "https://github.com/karmann-dm/gradle-versions-plugin"
+    vcsUrl = "https://github.com/karmann-dm/gradle-versions-plugin"
+    description = "Plugin for auto increase version"
+    tags = listOf("version", "semver", "automatic-versioning")
+}

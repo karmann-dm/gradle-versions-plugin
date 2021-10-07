@@ -1,7 +1,7 @@
 package com.karmanno.plugins
 
 class VersionInfo(
-    val branchName: String = DEFAULT_BRANCH,
+    var branchName: String = DEFAULT_BRANCH,
     var major: Int = 0,
     var minor: Int = 0,
     var patch: Int = 0,
@@ -24,7 +24,7 @@ class VersionInfo(
                     major = major, minor = minor, patch = patch, build = build
                 )
             } catch (e: Exception) {
-                VersionInfo()
+                VersionInfo(patch = 1)
             }
         }
 
@@ -37,6 +37,10 @@ class VersionInfo(
             append(DOT).append(
                 branchName.replace(" ", DOT).replace("-", DOT)
             )
+
+            if (build != null && build != 0) {
+                append(DOT).append(build)
+            }
         }
     }.toString()
 

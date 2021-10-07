@@ -8,9 +8,7 @@ import java.io.File
 class GitUtils {
     companion object {
         fun repo(project: Project): Git = try {
-            Git.wrap(
-                FileRepository(gitDirectory(project.projectDir))
-            )
+            Git.wrap(FileRepository(gitDirectory(project.projectDir)))
         } catch (e: Exception) {
             project.logger.error("Couldn't acquire git directory for dir: ${project.projectDir}")
             throw RuntimeException(e)
