@@ -4,6 +4,7 @@ plugins {
     kotlin("jvm") version "1.4.31"
     id("java-gradle-plugin")
     id("com.gradle.plugin-publish") version "0.14.0"
+    id("maven-publish")
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_11

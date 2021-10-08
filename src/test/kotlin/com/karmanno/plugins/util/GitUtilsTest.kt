@@ -1,5 +1,6 @@
-package com.karmanno.plugins
+package com.karmanno.plugins.util
 
+import com.karmanno.plugins.TestUtils
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir

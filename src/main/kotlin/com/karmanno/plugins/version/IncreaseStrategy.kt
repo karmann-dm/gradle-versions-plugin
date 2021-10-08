@@ -1,4 +1,4 @@
-package com.karmanno.plugins
+package com.karmanno.plugins.version
 
 interface IncreaseStrategy {
     fun supportablePatterns(): Set<String>

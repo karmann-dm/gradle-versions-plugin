@@ -1,4 +1,4 @@
-package com.karmanno.plugins
+package com.karmanno.plugins.version
 
 import org.junit.jupiter.api.Assertions.*
 

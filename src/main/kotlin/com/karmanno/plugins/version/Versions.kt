@@ -1,4 +1,6 @@
-package com.karmanno.plugins
+package com.karmanno.plugins.version
+
+import org.eclipse.jgit.revwalk.RevCommit
 
 class VersionInfo(
     var branchName: String = DEFAULT_BRANCH,
@@ -9,7 +11,7 @@ class VersionInfo(
 ) {
     companion object {
         const val DOT = "."
-        const val DEFAULT_BRANCH = "master"
+        var DEFAULT_BRANCH = "master"
 
         fun fromString(tag: String): VersionInfo {
             val tagString = if(isGlobal(tag)) { tag.split("/").last() } else tag
@@ -51,3 +53,9 @@ class VersionInfo(
 enum class IncreasePriority(val value: Int) {
     MAJOR(4), MINOR(3), PATCH(2), BUILD(1), NO_PRIORITY(0);
 }
+
+data class CurrentVersion(
+    val versionInfo: VersionInfo,
+    val commits: Iterable<RevCommit>? = null,
+    val branch: String
+)

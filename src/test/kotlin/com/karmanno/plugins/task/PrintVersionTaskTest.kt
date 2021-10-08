@@ -1,26 +1,14 @@
-package com.karmanno.plugins
+package com.karmanno.plugins.task
 
+import com.karmanno.plugins.TestUtils
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.PrintStream
-import java.util.*
 
 class PrintVersionTaskTest {
-    @Test
-    fun `using plugin id should apply successfully`(@TempDir tempDir: File) {
-        // given:
-        val project = TestUtils.initializeGradleProject(tempDir)
-
-        // when:
-        project.pluginManager.apply("com.karmanno.plugins.semver")
-
-        // then:
-        Assertions.assertThat(project.plugins.getPlugin(VersionsPlugin::class.java)).isNotNull
-    }
-
     @Test
     fun `printVersion task when git repo is empty then should print default version`(@TempDir tempDir: File) {
         // given:
@@ -60,7 +48,7 @@ class PrintVersionTaskTest {
     }
 
     @Test
-    fun `printVersion task when git repo doesn't exist then should print default version`(@TempDir tempDir: File) {
+    fun `printVersion task when git repo doesn't exist then should throw exception`(@TempDir tempDir: File) {
         // given:
         val project = TestUtils.initializeGradleProject(tempDir)
         val stdout = ByteArrayOutputStream()
@@ -97,6 +85,33 @@ class PrintVersionTaskTest {
 
         // then:
         Assertions.assertThat(stdout.toString().trim()).isEqualTo("2.0.0")
+    }
+
+    @Test
+    fun `printVersion when different release branch is specified then print release`(@TempDir tempDir: File) {
+        // given:
+        val project = TestUtils.initializeGradleProject(tempDir)
+        val git = TestUtils.initializeGitRepository(tempDir)
+        val stdout = ByteArrayOutputStream()
+        System.setOut(PrintStream(stdout))
+
+        val newFile = File(tempDir, "newFile.txt")
+        newFile.writeText("some text")
+        git.add().addFilepattern("*").call()
+        git.commit().setMessage("message").setAuthor("name", "e@mail").call()
+        git.checkout().setCreateBranch(true).setName("otherBranch").call()
+
+
+        // when:
+        project.pluginManager.apply("com.karmanno.plugins.semver")
+        val task: PrintVersionTask = project.tasks.withType(PrintVersionTask::class.java).single()
+        task.apply {
+            releaseBranch = "otherBranch"
+        }
+        task.doTask()
+
+        // then:
+        Assertions.assertThat(stdout.toString().trim()).isEqualTo("0.0.1")
     }
 
     @Test
