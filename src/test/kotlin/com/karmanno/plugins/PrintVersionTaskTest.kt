@@ -172,7 +172,7 @@ class PrintVersionTaskTest {
         project.tasks.withType(PrintVersionTask::class.java).single().doTask()
 
         // then:
-        Assertions.assertThat(stdout.toString().trim()).isEqualTo("1.2.7.otherBranch")
+        Assertions.assertThat(stdout.toString().trim()).isEqualTo("1.2.7.otherBranch.1")
     }
 
     @Test
@@ -189,12 +189,13 @@ class PrintVersionTaskTest {
         val rev = git.commit().setMessage("message").setAuthor("name", "e@mail").call()
         git.tag().setName("1.2.7").setObjectId(rev).call()
 
+        Thread.sleep(2000)
         git.checkout().setCreateBranch(true).setName("otherBranch").call()
         val newSecondFile = File(tempDir, "newFile1.txt")
         newSecondFile.writeText("some text")
         git.add().addFilepattern("*").call()
-        git.commit().setMessage("build: some build changes").setAuthor("name", "e@mail").call()
-        git.tag().setName("1.2.7.otherBranch").setObjectId(rev).call()
+        val rev2 = git.commit().setMessage("build: some build changes").setAuthor("name", "e@mail").call()
+        git.tag().setName("1.2.7.otherBranch.1").setObjectId(rev2).call()
         val newThirdFile = File(tempDir, "newFile2.txt")
         newThirdFile.writeText("some text")
         git.add().addFilepattern("*").call()
@@ -205,7 +206,7 @@ class PrintVersionTaskTest {
         project.tasks.withType(PrintVersionTask::class.java).single().doTask()
 
         // then:
-        Assertions.assertThat(stdout.toString().trim()).isEqualTo("1.2.7.otherBranch.1")
+        Assertions.assertThat(stdout.toString().trim()).isEqualTo("1.2.7.otherBranch.2")
     }
 
     @Test
@@ -226,13 +227,13 @@ class PrintVersionTaskTest {
         val newSecondFile = File(tempDir, "newFile1.txt")
         newSecondFile.writeText("some text")
         git.add().addFilepattern("*").call()
-        git.commit().setMessage("build: some build changes").setAuthor("name", "e@mail").call()
-        git.tag().setName("1.2.7.otherBranch").setObjectId(rev).call()
+        val rev2 = git.commit().setMessage("build: some build changes").setAuthor("name", "e@mail").call()
+        git.tag().setName("1.2.7.otherBranch").setObjectId(rev2).call()
         val newThirdFile = File(tempDir, "newFile2.txt")
         newThirdFile.writeText("some text")
         git.add().addFilepattern("*").call()
-        git.commit().setMessage("build: some build changes").setAuthor("name", "e@mail").call()
-        git.tag().setName("1.2.7.otherBranch.1").setObjectId(rev).call()
+        val rev3 = git.commit().setMessage("build: some build changes").setAuthor("name", "e@mail").call()
+        git.tag().setName("1.2.7.otherBranch.1").setObjectId(rev3).call()
         git.checkout().setName("master").call()
 
         val newFourthFile = File(tempDir, "newFile3.txt")
@@ -246,5 +247,35 @@ class PrintVersionTaskTest {
 
         // then:
         Assertions.assertThat(stdout.toString().trim()).isEqualTo("1.2.8")
+    }
+
+    @Test
+    fun `increase version after 9 suffix`(@TempDir tempDir: File) {
+        // given:
+        val project = TestUtils.initializeGradleProject(tempDir)
+        val git = TestUtils.initializeGitRepository(tempDir)
+        val stdout = ByteArrayOutputStream()
+        System.setOut(PrintStream(stdout))
+
+        (1 until 20).forEach {
+            val file = File(tempDir, "$it.txt")
+            file.writeText("some text")
+            git.add().addFilepattern("*").call()
+            val rev = git.commit().setMessage("fix: some fix changes").setAuthor("name", "e@mail").call()
+            git.tag().setName("0.0.$it").setObjectId(rev).call()
+            Thread.sleep(1000)
+        }
+
+        val newFile = File(tempDir, "newFile.txt")
+        newFile.writeText("some text")
+        git.add().addFilepattern("*").call()
+        git.commit().setMessage("fix: new fixes").setAuthor("name", "e@mail").call()
+
+        // when:
+        project.pluginManager.apply("com.karmanno.plugins.semver")
+        project.tasks.withType(PrintVersionTask::class.java).single().doTask()
+
+        // then:
+        Assertions.assertThat(stdout.toString().trim()).isEqualTo("0.0.20")
     }
 }

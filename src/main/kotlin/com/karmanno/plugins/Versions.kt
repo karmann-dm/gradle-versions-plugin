@@ -21,7 +21,7 @@ class VersionInfo(
 
                 VersionInfo(
                     branchName = branch ?: DEFAULT_BRANCH,
-                    major = major, minor = minor, patch = patch, build = build
+                    major = major, minor = minor, patch = patch, build = build ?: 0
                 )
             } catch (e: Exception) {
                 VersionInfo(patch = 1)
