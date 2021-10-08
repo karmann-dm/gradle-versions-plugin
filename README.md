@@ -69,7 +69,7 @@ Import plugin into your project using Gradle Plugin DSL
 ```
 plugins {
   id 'java'
-  id "com.karmanno.plugins.semver" version "1.15"
+  id "com.karmanno.plugins.semver" version "2.0.0"
 }
 ```
 Or using legacy Gradle plugins API
@@ -81,7 +81,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath "com.karmanno.plugins:gradle-versions-plugin:1.15"
+    classpath "com.karmanno.plugins:gradle-versions-plugin:2.0.0"
   }
 }
 
