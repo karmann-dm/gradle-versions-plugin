@@ -5,6 +5,9 @@ plugins {
     id("java-gradle-plugin")
     id("com.gradle.plugin-publish") version "0.14.0"
     id("maven-publish")
+
+    id("jacoco")
+    id("com.github.nbaztec.coveralls-jacoco") version "1.2.13"
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_11
@@ -40,6 +43,12 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
+tasks.jacocoTestReport {
+    reports {
+        xml.required.set(true)
+        csv.required.set(false)
+    }
+}
 
 gradlePlugin {
     plugins {
