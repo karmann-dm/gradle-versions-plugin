@@ -1,4 +1,5 @@
 ![Build](https://github.com/karmann-dm/gradle-versions-plugin/actions/workflows/gradle.yml/badge.svg)
+[![Coverage Status](https://coveralls.io/repos/github/karmann-dm/gradle-versions-plugin/badge.svg?branch=master)](https://coveralls.io/github/karmann-dm/gradle-versions-plugin?branch=master)
 
 # Gradle automatic versioning plugin
 
