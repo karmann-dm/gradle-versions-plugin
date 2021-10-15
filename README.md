@@ -1,5 +1,6 @@
-![Java CI](https://github.com/karmann-dm/gradle-versions-plugin/workflows/Java%20CI/badge.svg)
-# gradle-versions-plugin
+![Build](https://github.com/karmann-dm/gradle-versions-plugin/actions/workflows/gradle.yml/badge.svg)
+
+# Gradle automatic versioning plugin
 
 Semver plugin for gradle https://plugins.gradle.org/plugin/com.karmanno.plugins.semver
 
